@@ -955,7 +955,7 @@ Royal Dragon Slayers
                     for (let i = 0; i < images.length; i++) {
                         const dot = document.createElement("span");
                         dot.classList.add("dot");
-                        dot.addEventListener("click", showImage.bind(dot, i));
+                        dot.addEventListener("click", showImage.bind(undefined, i));
                         dotContainer.appendChild(dot);
                         dots.push(dot);
                     }
