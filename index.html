@@ -7,7 +7,6 @@
 <!doctype html>
 <html lang="en">
     <head>
-        <link rel="icon" href="/Royals_Assets/favicon.svg" />
         <style>
             /*#region Custom Scrollbar Styles */
             ::-webkit-scrollbar {
@@ -75,24 +74,6 @@
                 font-size: clamp(15px, calc(3vh + 1.5vw), 50px);
                 margin: 0;
                 user-select: none;
-            }
-
-            .header_search {
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                background-color: #ab3740;
-                width: 100%;
-                height: auto;
-                min-height: calc(2vh + 3vw);
-                flex-wrap: wrap;
-                margin: 0;
-                padding: 0;
-                border-bottom: 5px solid #0d52bf;
-            }
-
-            .header_search::-webkit-scrollbar {
-                width: 0;
             }
 
             /* Footer */
@@ -384,41 +365,6 @@
                     opacity 0.5s linear;
                 overflow: visible;
                 margin-bottom: 1em;
-            }
-            /* Home Button */
-            .home_button {
-                height: calc(4vw + 4vh);
-                width: calc(4vw + 4vh);
-                border-radius: calc(4vw + 4vh);
-                position: absolute;
-                background-image: url(Royals_Assets/RHS-Logo.svg);
-                background-size: cover;
-                right: 0;
-                top: 0;
-                cursor: pointer;
-            }
-
-            /* PDF */
-            .pdf {
-                width: calc(30vw + 40vh);
-                height: calc(20vh + 20vw);
-                border-radius: 20px;
-                margin-top: 5vw;
-                font-family: "Alata", sans-serif;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                color: whitesmoke;
-                -webkit-text-stroke: 1px #0d52bf;
-                text-stroke: 1px #0d52bf;
-                font-weight: bolder;
-                transition: transform 0.3s ease-in-out;
-                cursor: pointer;
-                user-select: none;
-                justify-self: center;
-                border: 5px solid #0d52bf;
-                background-image: url(Royals_Assets/Ad_Block_Error.svg);
-                background-repeat: no-repeat;
             }
 
             /* Slideshow container */
@@ -913,9 +859,20 @@ Royal Dragon Slayers
             </div>
         </div>
 
-        <div class="footer"></div>
-        <!--Javascript-->
-        <!--Javascript-->
+        <div class="footer">
+            <div class="footer_search" onclick="window.location.href='https://forms.gle/Zrd2BhEcvaSj8N1z8'">
+                Suggestions & Comments
+            </div>
+            <div class="footer_search" onclick="window.open('https://forms.gle/Ch1qXFrZsrdvdGVz7', '_blank')">
+                Join the Team
+            </div>
+            <div class="footer_search" onclick="window.open('https://forms.gle/RiH7PxHC6dXBBkpz7', '_blank')">
+                Submit a Story
+            </div>
+            <div class="footer_search" onclick="window.open('https://www.dodea.edu/ramsteinhs/index.cfm'), target='_blank'">
+                School Website
+            </div>
+        </div>
         <!--Javascript-->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.5/gsap.min.js"></script>
         <script data-feature="club-fair-expansion">
@@ -925,71 +882,6 @@ Royal Dragon Slayers
             }
         </script>
         <script data-feature="general">
-            (function () {
-                var elements = document.getElementsByClassName("footer");
-
-                for (var i = 0; i < elements.length; i++) {
-                    if (elements[i].innerHTML.trim() === "") {
-                        elements[i].innerHTML = `
-        <div class="footer_search" onclick="window.location.href='https://forms.gle/Zrd2BhEcvaSj8N1z8'">
-            Suggestions & Comments
-        </div>
-        <div class="footer_search" onclick="window.open('https://forms.gle/Ch1qXFrZsrdvdGVz7', '_blank')">
-            Join the Team
-        </div>
-        <div class="footer_search" onclick="window.open('https://forms.gle/RiH7PxHC6dXBBkpz7', '_blank')">
-            Submit a Story
-        </div>
-        <div class="footer_search" onclick="window.open('https://www.dodea.edu/ramsteinhs/index.cfm'), target='_blank'">
-            School Website
-        </div>`;
-                    }
-                }
-            })();
-
-            (function () {
-                var elements = document.getElementsByClassName("header_search");
-
-                for (var i = 0; i < elements.length; i++) {
-                    if (elements[i].innerHTML.trim() === "") {
-                        elements[i].innerHTML = `
-        <div
-            class="search_portal"
-            onclick="window.location.href='general-resources.html'">
-            General Resources
-        </div>
-        <div
-            class="search_portal"
-            onclick="window.location.href='academics.html'">
-            Academics
-        </div>
-        <div
-            class="search_portal"
-            onclick="window.location.href='principals-corner.html'">
-            Principals' Corner
-        </div>
-        <div
-            class="search_portal"
-            onclick="window.location.href='https://sites.google.com/student.dodea.edu/ramstein-athletics/home?'">
-            Athletics
-        </div>
-    `;
-                    }
-                }
-            })();
-
-            function addFavicon() {
-                var link = document.createElement("link");
-                link.rel = "icon";
-                link.type = "image/x-icon";
-                link.href = "/Royals_Assets/favicon.svg"; // Assuming favicon.svg is in Royals_Assets folder in the root directory
-                document.head.appendChild(link);
-            }
-
-            document.addEventListener("DOMContentLoaded", function () {
-                addFavicon();
-            });
-
             function createSlideshow(images, containerId) {
                 let currentIndex = 0;
                 const slideshow = document.getElementById(containerId);
@@ -997,12 +889,13 @@ Royal Dragon Slayers
                 dotContainer.classList.add("dot-container");
                 slideshow.appendChild(dotContainer);
                 const dots = [];
+                let intervalId = "";
 
                 function createDots() {
                     for (let i = 0; i < images.length; i++) {
                         const dot = document.createElement("span");
                         dot.classList.add("dot");
-                        dot.addEventListener("click", () => showImage(i));
+                        dot.addEventListener("click", showImage.bind(undefined, i));
                         dotContainer.appendChild(dot);
                         dots.push(dot);
                     }
@@ -1010,6 +903,8 @@ Royal Dragon Slayers
                 }
 
                 function showImage(index) {
+                    clearInterval(intervalId);
+                    intervalId = setInterval(showNextImage, 5000);
                     currentIndex = index;
                     const imagePath = images[currentIndex];
                     slideshow.style.backgroundImage = `url('${imagePath}')`;
@@ -1035,7 +930,6 @@ Royal Dragon Slayers
 
                 createDots();
                 showImage(0); // Set initial background image
-                setInterval(showNextImage, 5000);
             }
         </script>
         <script data-feature="createslideshow">
