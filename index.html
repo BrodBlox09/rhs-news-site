@@ -76,24 +76,6 @@
                 user-select: none;
             }
 
-            .header_search {
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                background-color: #ab3740;
-                width: 100%;
-                height: auto;
-                min-height: calc(2vh + 3vw);
-                flex-wrap: wrap;
-                margin: 0;
-                padding: 0;
-                border-bottom: 5px solid #0d52bf;
-            }
-
-            .header_search::-webkit-scrollbar {
-                width: 0;
-            }
-
             /* Footer */
             .footer {
                 display: flex;
@@ -877,7 +859,20 @@ Royal Dragon Slayers
             </div>
         </div>
 
-        <div class="footer"></div>
+        <div class="footer">
+            <div class="footer_search" onclick="window.location.href='https://forms.gle/Zrd2BhEcvaSj8N1z8'">
+                Suggestions & Comments
+            </div>
+            <div class="footer_search" onclick="window.open('https://forms.gle/Ch1qXFrZsrdvdGVz7', '_blank')">
+                Join the Team
+            </div>
+            <div class="footer_search" onclick="window.open('https://forms.gle/RiH7PxHC6dXBBkpz7', '_blank')">
+                Submit a Story
+            </div>
+            <div class="footer_search" onclick="window.open('https://www.dodea.edu/ramsteinhs/index.cfm'), target='_blank'">
+                School Website
+            </div>
+        </div>
         <!--Javascript-->
         <!--Javascript-->
         <!--Javascript-->
@@ -889,59 +884,6 @@ Royal Dragon Slayers
             }
         </script>
         <script data-feature="general">
-            (function () {
-                var elements = document.getElementsByClassName("footer");
-
-                for (var i = 0; i < elements.length; i++) {
-                    if (elements[i].innerHTML.trim() === "") {
-                        elements[i].innerHTML = `
-        <div class="footer_search" onclick="window.location.href='https://forms.gle/Zrd2BhEcvaSj8N1z8'">
-            Suggestions & Comments
-        </div>
-        <div class="footer_search" onclick="window.open('https://forms.gle/Ch1qXFrZsrdvdGVz7', '_blank')">
-            Join the Team
-        </div>
-        <div class="footer_search" onclick="window.open('https://forms.gle/RiH7PxHC6dXBBkpz7', '_blank')">
-            Submit a Story
-        </div>
-        <div class="footer_search" onclick="window.open('https://www.dodea.edu/ramsteinhs/index.cfm'), target='_blank'">
-            School Website
-        </div>`;
-                    }
-                }
-            })();
-
-            (function () {
-                var elements = document.getElementsByClassName("header_search");
-
-                for (var i = 0; i < elements.length; i++) {
-                    if (elements[i].innerHTML.trim() === "") {
-                        elements[i].innerHTML = `
-        <div
-            class="search_portal"
-            onclick="window.location.href='general-resources.html'">
-            General Resources
-        </div>
-        <div
-            class="search_portal"
-            onclick="window.location.href='academics.html'">
-            Academics
-        </div>
-        <div
-            class="search_portal"
-            onclick="window.location.href='principals-corner.html'">
-            Principals' Corner
-        </div>
-        <div
-            class="search_portal"
-            onclick="window.location.href='https://sites.google.com/student.dodea.edu/ramstein-athletics/home?'">
-            Athletics
-        </div>
-    `;
-                    }
-                }
-            })();
-
             function createSlideshow(images, containerId) {
                 let currentIndex = 0;
                 const slideshow = document.getElementById(containerId);
