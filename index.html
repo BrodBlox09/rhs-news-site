@@ -125,9 +125,6 @@
                 gap: 5px;
             }
 
-            iframe {
-            }
-
             .footer_search:hover {
                 background-color: #cccccc;
             }
@@ -195,7 +192,6 @@
                 font-family: "Alata", sans-serif;
                 font-size: clamp(10px, calc(4vw + 4vh), 75px);
                 -webkit-text-stroke: 1px #0d52bf;
-                text-stroke: 1px #0d52bf;
                 font-weight: bolder;
                 transition: transform 0.3s ease-in-out;
                 cursor: pointer;
@@ -326,13 +322,16 @@
 
             .slideshow {
                 position: absolute;
-                width: calc(100% * var(--slides-count));
+                width: calc(100% * (var(--slides-count) + 1));
                 height: 100%;
                 user-select: none;
                 display: flex;
                 flex-direction: row;
-                transition: 0.5s transform ease-in-out;
                 transform: translateX(0);
+                transition: 0.5s transform ease-in-out;
+            }
+            .sideshow.no-transition {
+                transition: 0s transform ease-in-out;
             }
 
             .slideshow .slide {
@@ -341,10 +340,6 @@
                 background-size: cover;
                 background-repeat: no-repeat;
                 background-position: center; /* Adjusted for better vertical centering */
-            }
-
-            .slideshow .slide.no-transition {
-                transition: none;
             }
 
             /* Navigation dots */
@@ -394,7 +389,6 @@
                 font-family: "Alata", sans-serif;
                 font-size: clamp(50px, calc(5vw + 5vh), 100px);
                 -webkit-text-stroke: 1px #0d52bf;
-                text-stroke: 1px #0d52bf;
                 font-weight: bolder;
                 transition: transform 0.3s ease-in-out;
                 cursor: pointer;
@@ -525,7 +519,6 @@
                 font-family: "Alata", sans-serif;
                 font-size: clamp(50px, calc(4vw + 4vh), 75px);
                 -webkit-text-stroke: 1px #0d52bf;
-                text-stroke: 1px #0d52bf;
                 font-weight: bolder;
                 transition: transform 0.3s ease-in-out;
                 user-select: none;
@@ -892,6 +885,7 @@ Royal Dragon Slayers
                 /** @type { HTMLElement[] } */
                 let slides = Array.from(slideshow.children);
                 let slidesCount = slides.length;
+                slideshow.appendChild(slides[0].cloneNode()); // Duplicate slide 1 to the end to give a fake infinite scroll illusion
                 let currentIndex = 0;
                 const dotContainer = document.createElement("div");
                 dotContainer.classList.add("dot-container");
@@ -919,8 +913,22 @@ Royal Dragon Slayers
 
                 function updateSlideshow() {
                     // Update slideshow position
-                    slideshow.style.setProperty("transform", `translateX(${-slides[0].clientWidth*currentIndex}px)`);
+                    if (currentIndex == slidesCount) {
+                        slideshow.style.setProperty("transform", `translateX(${currentIndex*-slides[0].clientWidth}px)`);
+                        currentIndex = 0;
+                        setTimeout(() => {
+                            slideshow.style.setProperty("transition", "none");
+                            // Delay is required for HTML processor to realize there is no more transition and instantly set x offset to 0
+                            setTimeout(() => {
+                                slideshow.style.setProperty("transform", `translateX(0px)`);
+                            }, 100);
+                            setTimeout(() => {
+                                slideshow.style.setProperty("transition", "0.5s transform ease-in-out");
+                            }, 150);
+                        }, 500);
+                    } else slideshow.style.setProperty("transform", `translateX(${currentIndex*-slides[0].clientWidth}px)`);
 
+                    console.log(currentIndex);
                     // Update dots
                     dots.forEach((dot, index) => {
                         if (index === currentIndex) {
@@ -932,7 +940,7 @@ Royal Dragon Slayers
                 }
 
                 function showNextImage() {
-                    currentIndex = (currentIndex + 1) % slides.length;
+                    currentIndex++;
                     updateSlideshow();
                 }
 
