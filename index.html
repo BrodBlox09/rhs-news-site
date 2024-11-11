@@ -314,9 +314,10 @@
             /* Slideshow container */
             .slideshow-wrapper {
                 position: relative;
-                /* overflow: hidden; */
+                overflow: clip;
                 margin: 0 auto;
                 height: calc(40vh + 15vw);
+                width: 100%;
                 border-bottom: 5px solid #0d52bf;
             }
 
@@ -412,8 +413,7 @@
                     bottom: 5px;
                 }
 
-                .slideshow {
-                    line-height: calc(25vw + 25vh);
+                .slideshow-wrapper {
                     height: calc(25vw + 25vh);
                 }
 
