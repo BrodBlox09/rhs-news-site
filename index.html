@@ -944,6 +944,10 @@ Royal Dragon Slayers
                     updateSlideshow();
                 }
 
+                window.addEventListener("resize", (e) => {
+                    updateSlideshow();
+                });
+
                 createDots();
                 showSlide(0); // Set initial background image
             }
