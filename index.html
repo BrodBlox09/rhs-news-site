@@ -7,6 +7,8 @@
 <!doctype html>
 <html lang="en">
     <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <style>
             /*#region Custom Scrollbar Styles */
             ::-webkit-scrollbar {
@@ -99,60 +101,6 @@
                 line-height: clamp(25px, calc(2.5vw + 2.5vh), 35px);
             }
 
-            @keyframes fadeOut {
-                from {
-                    opacity: 1;
-                }
-                to {
-                    opacity: 0;
-                }
-            }
-
-            .decorationa {
-                position: fixed;
-                bottom: 0;
-                left: 0;
-                width: 200px;
-                height: 200px;
-                z-index: 10; /* Adjust the value based on your layout */
-                cursor: pointer;
-                opacity: 1;
-                transition: opacity 0.5s ease-in-out;
-                visibility: visible;
-                background-size: contain;
-                background-repeat: no-repeat;
-                display: none; /* Initially hidden */
-            }
-
-            .decorationb {
-                position: fixed;
-                bottom: 0;
-                right: 0;
-                width: 200px;
-                height: 200px;
-                z-index: 10; /* Adjust the value based on your layout */
-                cursor: pointer;
-                opacity: 1;
-                transition: opacity 0.5s ease-in-out;
-                visibility: visible;
-                background-size: contain;
-                background-repeat: no-repeat;
-                display: none; /* Initially hidden */
-            }
-
-            .decorationc {
-                position: fixed;
-                height: 10vh;
-                bottom: 0;
-                width: 100%;
-                z-index: 10; /* Adjust the value based on your layout */
-                cursor: pointer;
-                opacity: 1;
-                transition: opacity 0.5s ease-in-out;
-                visibility: visible;
-                background-repeat: repeat;
-                display: none; /* Initially hidden */
-            }
             .footer_search {
                 display: flex;
                 align-items: center;
@@ -370,11 +318,8 @@
             /* Slideshow container */
             .slideshow {
                 position: relative;
-                width: 100vw;
+                width: 100%;
                 height: calc(40vh + 15vw);
-                background-size: cover;
-                background-position: center;
-                transition: background-image 0.5s ease-in-out;
                 border-bottom: 5px solid #0d52bf;
                 margin: 0 auto;
                 color: whitesmoke;
@@ -384,9 +329,36 @@
                 text-stroke: 1px #0d52bf;
                 line-height: calc(40vh + 15vw); /* Adjusted to default line-height */
                 user-select: none;
+                overflow: hidden;
+            }
+
+            .slideshow .slide {
+                width: 100%;
+                height: 100%;
+                position: absolute;
+                top: 0;
+                background-size: cover;
                 background-repeat: no-repeat;
                 background-position: center; /* Adjusted for better vertical centering */
+                transition: 0.5s transform ease-in-out;
             }
+
+            .slideshow .slide.no-transition {
+                transition: none;
+            }
+
+            .slideshow .slide.l {
+                transform: translateX(-100%);
+            }
+
+            .slideshow .slide.c {
+                transform: translateX(0%);
+            }
+
+            .slideshow .slide.r {
+                transform: translateX(100%);
+            }
+
             /* Navigation dots */
             .dot-container {
                 position: absolute;
@@ -596,25 +568,48 @@
             }
         </style>
         <!-- Put Decoration Pack after this tag -->
-        <style data-description="Halloween!">
-            .decorationa {
-                background-image: url(https://drive.google.com/thumbnail?id=1XCOL86C9ZIguVmcK9xpZcDWygNgLZs9l&sz=w1000);
+        <style data-description="Decorations">
+            .decoration {
                 transition: opacity 0.5s ease-in-out;
-                display: block;
+                display: none; /* Do not show if not activated below */
+                position: fixed;
+                width: 200px;
+                height: 200px;
+                z-index: 10; /* Adjust the value based on your layout */
+                cursor: pointer;
+                opacity: 1;
+                visibility: visible;
+                background-size: contain;
+                background-repeat: no-repeat;
             }
 
-            .decorationb {
-                background-image: url(https://drive.google.com/thumbnail?id=1CdaZ8qFcw4MMogGvxkGhQeVLzb09bBj_&sz=w1000);
-                transition: opacity 0.5s ease-in-out;
+            #decorationa {
                 display: block;
+                background-image: url(https://drive.google.com/thumbnail?id=1XCOL86C9ZIguVmcK9xpZcDWygNgLZs9l&sz=w1000);
+                bottom: 0;
+                left: 0;
+            }
+
+            #decorationb {
+                display: block;
+                background-image: url(https://drive.google.com/thumbnail?id=1CdaZ8qFcw4MMogGvxkGhQeVLzb09bBj_&sz=w1000);
+                bottom: 0;
+                right: 0;
+            }
+
+            #decorationc {
+                height: 10vh;
+                bottom: 0;
+                width: 100%;
+                background-repeat: repeat;
             }
         </style>
         <!-- Put decoration pack before this tag -->
     </head>
     <body>
-        <div class="decorationa" id="decorationa" onclick="decorationDisappear('decorationa')"></div>
-        <div class="decorationb" id="decorationb" onclick="decorationDisappear('decorationb')"></div>
-        <div class="decorationc" id="decorationc" onclick="decorationDisappear('decorationc')"></div>
+        <div class="decoration" id="decorationa" onclick="decorationDisappear(this)"></div>
+        <div class="decoration" id="decorationb" onclick="decorationDisappear(this)"></div>
+        <div class="decoration" id="decorationc" onclick="decorationDisappear(this)"></div>
         <div id="myModal" class="modal">
             <div class="modal-content">
                 <span class="close">&times;</span>
@@ -678,79 +673,89 @@ Spooky Season!                    <div class="blob"></div>
             <p>Welcome Back Royals!!!</p>
         </div>
         <div class="flex_alignment_top"></div>
-        <div class="slideshow" id="slideshow"></div>
-
-        <div class="flex_alignment_top">
-            <div
-                class="story"
-                onclick="window.open('https://sites.google.com/student.dodea.edu/royalsnews/debate-club', '_blank')"
-                style="
-                    background-image: url(https://drive.google.com/thumbnail?id=1guw7VjfZqoDhQQiZuoyvcHTFXPF-y8C5&sz=w1000);
-                ">
-                Debate Club
-            </div>
-        </div>
-        <div class="flex_alignment_top">
-            <div
-                class="story"
-                onclick="window.open('https://sites.google.com/student.dodea.edu/royalsnews/dnd-club', '_blank')"
-                style="
-                    background-image: url(https://drive.google.com/thumbnail?id=1QEGXSkWi_-e2zn82_cqZVxAtt-A3av0v&sz=w1000);
-                ">
-                Royal Dragon Slayers
-            </div>
-        </div>
-        <div class="flex_alignment_top">
-            <div
-                class="story"
-                onclick="window.open('https://sites.google.com/student.dodea.edu/royalsnews/pride-club', '_blank')"
-                style="
-                    background-image: url(https://drive.google.com/thumbnail?id=1nzXQ8_fZDsAA03PTn35rwAzHVALK_iZr&sz=w1000);
-                ">
-                Pride Club
-            </div>
+        <div class="slideshow" id="topSlideshow">
+            <div class="slide" data-slide=0 style="background-image: url(https://drive.google.com/thumbnail?id=1_rAMyVI3Jwq2-apnFnuUHcbYANgT_hyb&sz=w1000);"></div>
+            <div class="slide" data-slide=1 style="background-image: url(https://drive.google.com/thumbnail?id=1xIHAXpKr_WT5_OsE_o2BVxV3IviJy7sh&sz=w1000);"></div>
+            <div class="slide" style="background-image: url(https://drive.google.com/thumbnail?id=1rJi4sx5n1b65-YMjFxkNvK1Yo-JOHtbz&sz=w1000);"></div>
+            <div class="slide" style="background-image: url(https://drive.google.com/thumbnail?id=1JI8pu49VvfQ2PM8mnLCsDr3Snw5Fgw-B&sz=w1000);"></div>
+            <div class="slide" style="background-image: url(https://drive.google.com/thumbnail?id=1RDSzO59rI247nB5FGSP4FljBE-TEbtVR&sz=w1000);"></div>
+            <div class="slide" style="background-image: url(https://drive.google.com/thumbnail?id=1_LoJ_cETWNUj5_yhjeV8BFqRn-SAcQQp&sz=w1000);"></div>
         </div>
 
-        <div class="flex_alignment_top">
-            <div
-                class="story"
-                onclick="window.open('https://sites.google.com/student.dodea.edu/royalsnews/homecoming', '_blank')"
-                style="
-                    background-image: url(https://drive.google.com/thumbnail?id=1H3VAObF4gD4-XvMT1_1peyMWFsFfQJgc&sz=w1000);
-                ">
-                <strong>Homecoming</strong>
+        <!-- Featured Stories -->
+        <div>
+            <div class="flex_alignment_top">
+                <div
+                    class="story"
+                    onclick="window.open('https://sites.google.com/student.dodea.edu/royalsnews/debate-club', '_blank')"
+                    style="
+                        background-image: url(https://drive.google.com/thumbnail?id=1guw7VjfZqoDhQQiZuoyvcHTFXPF-y8C5&sz=w1000);
+                    ">
+                    Debate Club
+                </div>
             </div>
-        </div>
-
-        <div class="flex_alignment_top">
-            <div
-                class="story"
-                onclick="window.open('https://sites.google.com/student.dodea.edu/royalsnews/back-to-school', '_blank')"
-                style="
-                    background-image: url(https://drive.google.com/thumbnail?id=1VObCavwyKKwmbmfPO8TnY6w3FFJkI_LH&sz=w1000);
-                ">
-                Back To School
+            <div class="flex_alignment_top">
+                <div
+                    class="story"
+                    onclick="window.open('https://sites.google.com/student.dodea.edu/royalsnews/dnd-club', '_blank')"
+                    style="
+                        background-image: url(https://drive.google.com/thumbnail?id=1QEGXSkWi_-e2zn82_cqZVxAtt-A3av0v&sz=w1000);
+                    ">
+                    Royal Dragon Slayers
+                </div>
             </div>
-        </div>
-        <div class="flex_alignment_top">
-            <div
-                class="story"
-                onclick="window.open('https://sites.google.com/student.dodea.edu/royalsnews/parent-university', '_blank')"
-                style="
-                    background-image: url(https://drive.google.com/thumbnail?id=1LLgUnqZmgfr5XwW1_R-PUacxUwgg0zuh&sz=w1000);
-                ">
-                Parent University
+            <div class="flex_alignment_top">
+                <div
+                    class="story"
+                    onclick="window.open('https://sites.google.com/student.dodea.edu/royalsnews/pride-club', '_blank')"
+                    style="
+                        background-image: url(https://drive.google.com/thumbnail?id=1nzXQ8_fZDsAA03PTn35rwAzHVALK_iZr&sz=w1000);
+                    ">
+                    Pride Club
+                </div>
             </div>
-        </div>
-
-        <div class="flex_alignment_top">
-            <div
-                class="story"
-                onclick="window.open('https://sites.google.com/student.dodea.edu/royalsnews/rhs-bus', '_blank')"
-                style="
-                    background-image: url(https://drive.google.com/thumbnail?id=1OFkGG5YJupar_pWfOSM1hvGYreOHIJAh&sz=w1000);
-                ">
-                Bus Registration
+    
+            <div class="flex_alignment_top">
+                <div
+                    class="story"
+                    onclick="window.open('https://sites.google.com/student.dodea.edu/royalsnews/homecoming', '_blank')"
+                    style="
+                        background-image: url(https://drive.google.com/thumbnail?id=1H3VAObF4gD4-XvMT1_1peyMWFsFfQJgc&sz=w1000);
+                    ">
+                    <strong>Homecoming</strong>
+                </div>
+            </div>
+    
+            <div class="flex_alignment_top">
+                <div
+                    class="story"
+                    onclick="window.open('https:/\/sites.google.com/student.dodea.edu/royalsnews/back-to-school', '_blank')"
+                    style="
+                        background-image: url(https://drive.google.com/thumbnail?id=1VObCavwyKKwmbmfPO8TnY6w3FFJkI_LH&sz=w1000);
+                    ">
+                    Back To School
+                </div>
+            </div>
+            <div class="flex_alignment_top">
+                <div
+                    class="story"
+                    onclick="window.open('https:/\/sites.google.com/student.dodea.edu/royalsnews/parent-university', '_blank')"
+                    style="
+                        background-image: url(https://drive.google.com/thumbnail?id=1LLgUnqZmgfr5XwW1_R-PUacxUwgg0zuh&sz=w1000);
+                    ">
+                    Parent University
+                </div>
+            </div>
+    
+            <div class="flex_alignment_top">
+                <div
+                    class="story"
+                    onclick="window.open('https:/\/sites.google.com/student.dodea.edu/royalsnews/rhs-bus', '_blank')"
+                    style="
+                        background-image: url(https://drive.google.com/thumbnail?id=1OFkGG5YJupar_pWfOSM1hvGYreOHIJAh&sz=w1000);
+                    ">
+                    Bus Registration
+                </div>
             </div>
         </div>
 
@@ -766,7 +771,7 @@ Spooky Season!                    <div class="blob"></div>
             <div class="flex_alignment_top">
                 <div
                     class="story"
-                    onclick="window.open('https://sites.google.com/student.dodea.edu/royalsnews/about-us', '_blank')"
+                    onclick="window.open('https:/\/sites.google.com/student.dodea.edu/royalsnews/about-us', '_blank')"
                     style="
                         background-image: url(https://drive.google.com/thumbnail?id=1DF7C_sTMihFn9BplIpmk1vkv5GP956XL&sz=w1000);
                     ">
@@ -776,7 +781,7 @@ Spooky Season!                    <div class="blob"></div>
             <div class="flex_alignment_top">
                 <div
                     class="story"
-                    onclick="window.open('https://sites.google.com/student.dodea.edu/royalsnews/debate-club', '_blank')"
+                    onclick="window.open('https:/\/sites.google.com/student.dodea.edu/royalsnews/debate-club', '_blank')"
                     style="
                         background-image: url(https://drive.google.com/thumbnail?id=1guw7VjfZqoDhQQiZuoyvcHTFXPF-y8C5&sz=w1000);
                     ">
@@ -786,7 +791,7 @@ Spooky Season!                    <div class="blob"></div>
             <div class="flex_alignment_top">
                 <div
                     class="story"
-                    onclick="window.open('https://sites.google.com/student.dodea.edu/royalsnews/dnd-club', '_blank')"
+                    onclick="window.open('https:/\/sites.google.com/student.dodea.edu/royalsnews/dnd-club', '_blank')"
                     style="
                         background-image: url(https://drive.google.com/thumbnail?id=1QEGXSkWi_-e2zn82_cqZVxAtt-A3av0v&sz=w1000);
                     ">
@@ -796,7 +801,7 @@ Royal Dragon Slayers
             <div class="flex_alignment_top">
                 <div
                     class="story"
-                    onclick="window.open('https://sites.google.com/student.dodea.edu/royalsnews/pride-club', '_blank')"
+                    onclick="window.open('https:/\/sites.google.com/student.dodea.edu/royalsnews/pride-club', '_blank')"
                     style="
                         background-image: url(https://drive.google.com/thumbnail?id=1nzXQ8_fZDsAA03PTn35rwAzHVALK_iZr&sz=w1000);
                     ">
@@ -806,7 +811,7 @@ Royal Dragon Slayers
             <div class="flex_alignment_top">
                 <div
                     class="story"
-                    onclick="window.open('https://sites.google.com/student.dodea.edu/royalsnews/royals-robotics', '_blank')"
+                    onclick="window.open('https:/\/sites.google.com/student.dodea.edu/royalsnews/royals-robotics', '_blank')"
                     style="
                         background-image: url(https://drive.google.com/thumbnail?id=1_PstX2-Pydr0A0ySFs8kM5qlWBSPotTA&sz=w1000);
                     ">
@@ -817,7 +822,7 @@ Royal Dragon Slayers
             <div class="flex_alignment_top">
                 <div
                     class="story"
-                    onclick="window.open('https://sites.google.com/student.dodea.edu/royalsnews/swing-dance', '_blank')"
+                    onclick="window.open('https:/\/sites.google.com/student.dodea.edu/royalsnews/swing-dance', '_blank')"
                     style="
                         background-image: url(https://drive.google.com/thumbnail?id=1O9_JEm5XRIhAJS8kd5R5fhV1nP8nrD6b&sz=w1000);
                     ">
@@ -828,7 +833,7 @@ Royal Dragon Slayers
             <div class="flex_alignment_top">
                 <div
                     class="story"
-                    onclick="window.open('https://sites.google.com/student.dodea.edu/royalsnews/royal-readers', '_blank')"
+                    onclick="window.open('https:/\/sites.google.com/student.dodea.edu/royalsnews/royal-readers', '_blank')"
                     style="
                         background-image: url(https://drive.google.com/thumbnail?id=1e01GMPXaFrKfzOulF8B7VRtDquDFIzf9&sz=w1000);
                     ">
@@ -839,7 +844,7 @@ Royal Dragon Slayers
             <div class="flex_alignment_top">
                 <div
                     class="story"
-                    onclick="window.open('https://sites.google.com/student.dodea.edu/royalsnews/educators-rising', '_blank')"
+                    onclick="window.open('https:/\/sites.google.com/student.dodea.edu/royalsnews/educators-rising', '_blank')"
                     style="
                         background-image: url(https://drive.google.com/thumbnail?id=1ejIx8VTVlD8OrvchHVNg_GreQIfYfaog&sz=w1000);
                     ">
@@ -850,7 +855,7 @@ Royal Dragon Slayers
             <div class="flex_alignment_top">
                 <div
                     class="story"
-                    onclick="window.open('https://sites.google.com/student.dodea.edu/royalsnews/performing-arts-club', '_blank')"
+                    onclick="window.open('https:/\/sites.google.com/student.dodea.edu/royalsnews/performing-arts-club', '_blank')"
                     style="
                         background-image: url(https://drive.google.com/thumbnail?id=1OYwZijHShYYjZBbfpU3Dn-vjGvmjAluX&sz=w1000);
                     ">
@@ -860,16 +865,16 @@ Royal Dragon Slayers
         </div>
 
         <div class="footer">
-            <div class="footer_search" onclick="window.location.href='https://forms.gle/Zrd2BhEcvaSj8N1z8'">
+            <div class="footer_search" onclick="window.location.href='https:/\/forms.gle/Zrd2BhEcvaSj8N1z8'">
                 Suggestions & Comments
             </div>
-            <div class="footer_search" onclick="window.open('https://forms.gle/Ch1qXFrZsrdvdGVz7', '_blank')">
+            <div class="footer_search" onclick="window.open('https:/\/forms.gle/Ch1qXFrZsrdvdGVz7', '_blank')">
                 Join the Team
             </div>
-            <div class="footer_search" onclick="window.open('https://forms.gle/RiH7PxHC6dXBBkpz7', '_blank')">
+            <div class="footer_search" onclick="window.open('https:/\/forms.gle/RiH7PxHC6dXBBkpz7', '_blank')">
                 Submit a Story
             </div>
-            <div class="footer_search" onclick="window.open('https://www.dodea.edu/ramsteinhs/index.cfm'), target='_blank'">
+            <div class="footer_search" onclick="window.open('https:/\/www.dodea.edu/ramsteinhs/index.cfm'), target='_blank'">
                 School Website
             </div>
         </div>
@@ -882,9 +887,10 @@ Royal Dragon Slayers
             }
         </script>
         <script data-feature="general">
-            function createSlideshow(images, containerId) {
+            const slideshows = document.getElementsByClassName("slideshow");
+            for (const slideshow of slideshows) {
+                let slides = Array.from(slideshow.children);
                 let currentIndex = 0;
-                const slideshow = document.getElementById(containerId);
                 const dotContainer = document.createElement("div");
                 dotContainer.classList.add("dot-container");
                 slideshow.appendChild(dotContainer);
@@ -892,26 +898,35 @@ Royal Dragon Slayers
                 let intervalId = "";
 
                 function createDots() {
-                    for (let i = 0; i < images.length; i++) {
+                    for (let i = 0; i < slides.length; i++) {
                         const dot = document.createElement("span");
                         dot.classList.add("dot");
-                        dot.addEventListener("click", showImage.bind(undefined, i));
+                        dot.addEventListener("click", showSlide.bind(undefined, i));
                         dotContainer.appendChild(dot);
                         dots.push(dot);
                     }
                     dots[0].classList.add("active-dot");
                 }
 
-                function showImage(index) {
+                function showSlide(index) {
                     clearInterval(intervalId);
                     intervalId = setInterval(showNextImage, 5000);
                     currentIndex = index;
-                    const imagePath = images[currentIndex];
-                    slideshow.style.backgroundImage = `url('${imagePath}')`;
-                    updateDots();
+                    updateSlideshow();
                 }
 
-                function updateDots() {
+                function updateSlideshow() {
+                    // Update slides
+                    for (var i = 0; i < slides.length; i++) {
+                        let slide = slides[i];
+                        let classList = slide.classList;
+                        classList.remove('l', 'c', 'r');
+                        if (i < currentIndex) classList.add('l');
+                        if (i == currentIndex) classList.add('c');
+                        if (i > currentIndex) classList.add('r');
+                    }
+
+                    // Update dots
                     dots.forEach((dot, index) => {
                         if (index === currentIndex) {
                             dot.classList.add("active-dot");
@@ -922,28 +937,13 @@ Royal Dragon Slayers
                 }
 
                 function showNextImage() {
-                    currentIndex = (currentIndex + 1) % images.length;
-                    const imagePath = images[currentIndex];
-                    slideshow.style.backgroundImage = `url('${imagePath}')`;
-                    updateDots();
+                    currentIndex = (currentIndex + 1) % slides.length;
+                    updateSlideshow();
                 }
 
                 createDots();
-                showImage(0); // Set initial background image
+                showSlide(0); // Set initial background image
             }
-        </script>
-        <script data-feature="createslideshow">
-            createSlideshow(
-                [
-                    "https://drive.google.com/thumbnail?id=1_rAMyVI3Jwq2-apnFnuUHcbYANgT_hyb&sz=w1000",
-                    "https://drive.google.com/thumbnail?id=1xIHAXpKr_WT5_OsE_o2BVxV3IviJy7sh&sz=w1000",
-                    "https://drive.google.com/thumbnail?id=1rJi4sx5n1b65-YMjFxkNvK1Yo-JOHtbz&sz=w1000",
-                    "https://drive.google.com/thumbnail?id=1JI8pu49VvfQ2PM8mnLCsDr3Snw5Fgw-B&sz=w1000",
-                    "https://drive.google.com/thumbnail?id=1RDSzO59rI247nB5FGSP4FljBE-TEbtVR&sz=w1000",
-                    "https://drive.google.com/thumbnail?id=1_LoJ_cETWNUj5_yhjeV8BFqRn-SAcQQp&sz=w1000"
-                ],
-                "slideshow"
-            );
         </script>
         <script>
             function startLavaLamp() {
@@ -1023,8 +1023,7 @@ Royal Dragon Slayers
             };
         </script>
         <script data-feature="lava-lamp">
-            function decorationDisappear(elementId) {
-                var element = document.getElementById(elementId);
+            function decorationDisappear(element) {
                 element.style.opacity = "0";
                 setTimeout(function () {
                     element.style.display = "none";
