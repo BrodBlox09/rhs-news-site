@@ -323,16 +323,9 @@
 
             .slideshow {
                 position: absolute;
-                width: calc(100% * (var(--slides-count) + 1));
+                width: 100%;
                 height: 100%;
                 user-select: none;
-                display: flex;
-                flex-direction: row;
-                transform: translateX(0);
-                transition: 0.5s transform ease-in-out;
-            }
-            .sideshow.no-transition {
-                transition: 0s transform ease-in-out;
             }
 
             .slideshow .slide {
@@ -341,6 +334,13 @@
                 background-size: cover;
                 background-repeat: no-repeat;
                 background-position: center; /* Adjusted for better vertical centering */
+                position: absolute;
+                top: 0;
+                transform: translateX(0);
+                transition: 0.5s transform ease-in-out;
+            }
+            .sideshow .slide.no-transition {
+                transition: 0s transform ease-in-out;
             }
 
             /* Navigation dots */
@@ -664,7 +664,7 @@ Spooky Season!                    <div class="blob"></div>
         </div>
         <div class="flex_alignment_top"></div>
         <div class="slideshow-wrapper" id="topSlideshow">
-            <div class="slideshow" style="--slides-count: 6;">
+            <div class="slideshow">
                 <div class="slide" style="background-image: url(https://drive.google.com/thumbnail?id=1_rAMyVI3Jwq2-apnFnuUHcbYANgT_hyb&sz=w1000);"></div>
                 <div class="slide" style="background-image: url(https://drive.google.com/thumbnail?id=1xIHAXpKr_WT5_OsE_o2BVxV3IviJy7sh&sz=w1000);"></div>
                 <div class="slide" style="background-image: url(https://drive.google.com/thumbnail?id=1rJi4sx5n1b65-YMjFxkNvK1Yo-JOHtbz&sz=w1000);"></div>
@@ -878,14 +878,16 @@ Royal Dragon Slayers
                 clubFairSection.classList.toggle("expanded");
             }
         </script>
-        <script data-feature="general">
+        <script data-feature="slideshow">
             /** @type { HTMLCollectionOf<HTMLElement> } */
             const slideshows = document.getElementsByClassName("slideshow");
             for (const slideshow of slideshows) {
                 /** @type { HTMLElement[] } */
                 let slides = Array.from(slideshow.children);
                 let slidesCount = slides.length;
-                slideshow.appendChild(slides[0].cloneNode()); // Duplicate slide 1 to the end to give a fake infinite scroll illusion
+                let firstSlideDuplicate = slides[0].cloneNode();
+                slideshow.appendChild(firstSlideDuplicate); // Duplicate slide 1 to the end to give a fake infinite scroll illusion
+                slides.push(firstSlideDuplicate);
                 let currentIndex = 0;
                 const dotContainer = document.createElement("div");
                 dotContainer.classList.add("dot-container");
@@ -912,23 +914,25 @@ Royal Dragon Slayers
                 }
 
                 function updateSlideshow() {
-                    // Update slideshow position
-                    if (currentIndex == slidesCount) {
-                        slideshow.style.setProperty("transform", `translateX(${currentIndex*-slides[0].clientWidth}px)`);
-                        currentIndex = 0;
-                        setTimeout(() => {
-                            slideshow.style.setProperty("transition", "none");
-                            // Delay is required for HTML processor to realize there is no more transition and instantly set x offset to 0
+                    // Update slide positions
+                    let currIndex = currentIndex;
+                    if (currentIndex == slidesCount) currentIndex = 0;
+                    slides.forEach((slide, index) => {
+                        if (currIndex == slidesCount) {
+                            slide.style.setProperty("transform", `translateX(${(index - currIndex) * 100}%)`);
                             setTimeout(() => {
-                                slideshow.style.setProperty("transform", `translateX(0px)`);
-                            }, 100);
-                            setTimeout(() => {
-                                slideshow.style.setProperty("transition", "0.5s transform ease-in-out");
-                            }, 150);
-                        }, 500);
-                    } else slideshow.style.setProperty("transform", `translateX(${currentIndex*-slides[0].clientWidth}px)`);
+                                slide.style.setProperty("transition", "none");
+                                // Delay is required for HTML processor to realize there is no more transition and instantly set x offset to 0
+                                setTimeout(() => {
+                                    slide.style.setProperty("transform", `translateX(${index * 100}%)`);
+                                }, 100);
+                                setTimeout(() => {
+                                    slide.style.setProperty("transition", "0.5s transform ease-in-out");
+                                }, 150);
+                            }, 500);
+                        } else slide.style.setProperty("transform", `translateX(${(index - currentIndex) * 100}%)`);
+                    });
 
-                    console.log(currentIndex);
                     // Update dots
                     dots.forEach((dot, index) => {
                         if (index === currentIndex) {
