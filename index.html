@@ -352,18 +352,21 @@
                 display: flex;
                 justify-content: center;
                 background-color: whitesmoke;
-                padding: 2px;
-                border-radius: 20px;
+                padding: 4px;
+                height: 20px;
+                gap: 8px;
+                border-radius: 14px;
             }
 
             .dot {
-                height: 11.5px;
-                width: 11.5px;
-                margin: 0 4px;
+                height: 12px;
+                width: 12px;
+                transform: scale(1);
                 background-color: #bbb;
                 border-radius: 50%;
-                display: inline-block;
-                transition: background-color 0.3s ease-in-out;
+                transition:
+                    background-color 0.3s ease-in-out,
+                    transform 0.3s ease-in-out;
                 cursor: pointer;
             }
 
@@ -376,6 +379,7 @@
 
             .active-dot {
                 background-color: #717171;
+                transform: scale(1.2);
             }
 
             .img_profile {
@@ -897,7 +901,7 @@ Royal Dragon Slayers
 
                 function createDots() {
                     for (let i = 0; i < slidesCount; i++) {
-                        const dot = document.createElement("span");
+                        const dot = document.createElement("div");
                         dot.classList.add("dot");
                         dot.addEventListener("click", showSlide.bind(undefined, i));
                         dotContainer.appendChild(dot);
