@@ -125,9 +125,6 @@
                 gap: 5px;
             }
 
-            iframe {
-            }
-
             .footer_search:hover {
                 background-color: #cccccc;
             }
@@ -195,7 +192,6 @@
                 font-family: "Alata", sans-serif;
                 font-size: clamp(10px, calc(4vw + 4vh), 75px);
                 -webkit-text-stroke: 1px #0d52bf;
-                text-stroke: 1px #0d52bf;
                 font-weight: bolder;
                 transition: transform 0.3s ease-in-out;
                 cursor: pointer;
@@ -316,47 +312,34 @@
             }
 
             /* Slideshow container */
-            .slideshow {
+            .slideshow-wrapper {
                 position: relative;
-                width: 100%;
+                /* overflow: hidden; */
+                margin: 0 auto;
                 height: calc(40vh + 15vw);
                 border-bottom: 5px solid #0d52bf;
-                margin: 0 auto;
-                color: whitesmoke;
-                font-family: "Alata", sans-serif;
-                font-size: clamp(50px, calc(5vw + 5vh), 100px);
-                -webkit-text-stroke: 1px #0d52bf;
-                text-stroke: 1px #0d52bf;
-                line-height: calc(40vh + 15vw); /* Adjusted to default line-height */
+            }
+
+            .slideshow {
+                position: absolute;
+                width: calc(100% * (var(--slides-count) + 1));
+                height: 100%;
                 user-select: none;
-                overflow: hidden;
+                display: flex;
+                flex-direction: row;
+                transform: translateX(0);
+                transition: 0.5s transform ease-in-out;
+            }
+            .sideshow.no-transition {
+                transition: 0s transform ease-in-out;
             }
 
             .slideshow .slide {
                 width: 100%;
                 height: 100%;
-                position: absolute;
-                top: 0;
                 background-size: cover;
                 background-repeat: no-repeat;
                 background-position: center; /* Adjusted for better vertical centering */
-                transition: 0.5s transform ease-in-out;
-            }
-
-            .slideshow .slide.no-transition {
-                transition: none;
-            }
-
-            .slideshow .slide.l {
-                transform: translateX(-100%);
-            }
-
-            .slideshow .slide.c {
-                transform: translateX(0%);
-            }
-
-            .slideshow .slide.r {
-                transform: translateX(100%);
             }
 
             /* Navigation dots */
@@ -406,7 +389,6 @@
                 font-family: "Alata", sans-serif;
                 font-size: clamp(50px, calc(5vw + 5vh), 100px);
                 -webkit-text-stroke: 1px #0d52bf;
-                text-stroke: 1px #0d52bf;
                 font-weight: bolder;
                 transition: transform 0.3s ease-in-out;
                 cursor: pointer;
@@ -537,7 +519,6 @@
                 font-family: "Alata", sans-serif;
                 font-size: clamp(50px, calc(4vw + 4vh), 75px);
                 -webkit-text-stroke: 1px #0d52bf;
-                text-stroke: 1px #0d52bf;
                 font-weight: bolder;
                 transition: transform 0.3s ease-in-out;
                 user-select: none;
@@ -682,13 +663,15 @@ Spooky Season!                    <div class="blob"></div>
             <p>Welcome Back Royals!!!</p>
         </div>
         <div class="flex_alignment_top"></div>
-        <div class="slideshow" id="topSlideshow">
-            <div class="slide" style="background-image: url(https://drive.google.com/thumbnail?id=1_rAMyVI3Jwq2-apnFnuUHcbYANgT_hyb&sz=w1000);"></div>
-            <div class="slide" style="background-image: url(https://drive.google.com/thumbnail?id=1xIHAXpKr_WT5_OsE_o2BVxV3IviJy7sh&sz=w1000);"></div>
-            <div class="slide" style="background-image: url(https://drive.google.com/thumbnail?id=1rJi4sx5n1b65-YMjFxkNvK1Yo-JOHtbz&sz=w1000);"></div>
-            <div class="slide" style="background-image: url(https://drive.google.com/thumbnail?id=1JI8pu49VvfQ2PM8mnLCsDr3Snw5Fgw-B&sz=w1000);"></div>
-            <div class="slide" style="background-image: url(https://drive.google.com/thumbnail?id=1RDSzO59rI247nB5FGSP4FljBE-TEbtVR&sz=w1000);"></div>
-            <div class="slide" style="background-image: url(https://drive.google.com/thumbnail?id=1_LoJ_cETWNUj5_yhjeV8BFqRn-SAcQQp&sz=w1000);"></div>
+        <div class="slideshow-wrapper" id="topSlideshow">
+            <div class="slideshow" style="--slides-count: 6;">
+                <div class="slide" style="background-image: url(https://drive.google.com/thumbnail?id=1_rAMyVI3Jwq2-apnFnuUHcbYANgT_hyb&sz=w1000);"></div>
+                <div class="slide" style="background-image: url(https://drive.google.com/thumbnail?id=1xIHAXpKr_WT5_OsE_o2BVxV3IviJy7sh&sz=w1000);"></div>
+                <div class="slide" style="background-image: url(https://drive.google.com/thumbnail?id=1rJi4sx5n1b65-YMjFxkNvK1Yo-JOHtbz&sz=w1000);"></div>
+                <div class="slide" style="background-image: url(https://drive.google.com/thumbnail?id=1JI8pu49VvfQ2PM8mnLCsDr3Snw5Fgw-B&sz=w1000);"></div>
+                <div class="slide" style="background-image: url(https://drive.google.com/thumbnail?id=1RDSzO59rI247nB5FGSP4FljBE-TEbtVR&sz=w1000);"></div>
+                <div class="slide" style="background-image: url(https://drive.google.com/thumbnail?id=1_LoJ_cETWNUj5_yhjeV8BFqRn-SAcQQp&sz=w1000);"></div>
+            </div>
         </div>
 
         <!-- Featured Stories -->
@@ -896,18 +879,22 @@ Royal Dragon Slayers
             }
         </script>
         <script data-feature="general">
+            /** @type { HTMLCollectionOf<HTMLElement> } */
             const slideshows = document.getElementsByClassName("slideshow");
             for (const slideshow of slideshows) {
+                /** @type { HTMLElement[] } */
                 let slides = Array.from(slideshow.children);
+                let slidesCount = slides.length;
+                slideshow.appendChild(slides[0].cloneNode()); // Duplicate slide 1 to the end to give a fake infinite scroll illusion
                 let currentIndex = 0;
                 const dotContainer = document.createElement("div");
                 dotContainer.classList.add("dot-container");
-                slideshow.appendChild(dotContainer);
+                slideshow.parentElement.appendChild(dotContainer);
                 const dots = [];
                 let intervalId = "";
 
                 function createDots() {
-                    for (let i = 0; i < slides.length; i++) {
+                    for (let i = 0; i < slidesCount; i++) {
                         const dot = document.createElement("span");
                         dot.classList.add("dot");
                         dot.addEventListener("click", showSlide.bind(undefined, i));
@@ -925,16 +912,23 @@ Royal Dragon Slayers
                 }
 
                 function updateSlideshow() {
-                    // Update slides
-                    for (var i = 0; i < slides.length; i++) {
-                        let slide = slides[i];
-                        let classList = slide.classList;
-                        classList.remove('l', 'c', 'r');
-                        if (i < currentIndex) classList.add('l');
-                        if (i == currentIndex) classList.add('c');
-                        if (i > currentIndex) classList.add('r');
-                    }
+                    // Update slideshow position
+                    if (currentIndex == slidesCount) {
+                        slideshow.style.setProperty("transform", `translateX(${currentIndex*-slides[0].clientWidth}px)`);
+                        currentIndex = 0;
+                        setTimeout(() => {
+                            slideshow.style.setProperty("transition", "none");
+                            // Delay is required for HTML processor to realize there is no more transition and instantly set x offset to 0
+                            setTimeout(() => {
+                                slideshow.style.setProperty("transform", `translateX(0px)`);
+                            }, 100);
+                            setTimeout(() => {
+                                slideshow.style.setProperty("transition", "0.5s transform ease-in-out");
+                            }, 150);
+                        }, 500);
+                    } else slideshow.style.setProperty("transform", `translateX(${currentIndex*-slides[0].clientWidth}px)`);
 
+                    console.log(currentIndex);
                     // Update dots
                     dots.forEach((dot, index) => {
                         if (index === currentIndex) {
@@ -946,9 +940,13 @@ Royal Dragon Slayers
                 }
 
                 function showNextImage() {
-                    currentIndex = (currentIndex + 1) % slides.length;
+                    currentIndex++;
                     updateSlideshow();
                 }
+
+                window.addEventListener("resize", (e) => {
+                    updateSlideshow();
+                });
 
                 createDots();
                 showSlide(0); // Set initial background image
